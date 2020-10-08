@@ -12,12 +12,15 @@ from .settings import *
 
 
 def get_env_variable(variable, default=None):
-    value = os.getenv(f'DJANGO__{variable}')
+    prefix = 'DJANGO__'
+    env_var_name = f'{prefix}{variable}'
+    value = os.getenv(env_var_name)
     if value is None:
         if default:
             value = default
         else:
-            raise ImproperlyConfigured
+            raise ImproperlyConfigured(
+                f'Add the {env_var_name} environment variable')
     return value
 
 
