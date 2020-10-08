@@ -60,7 +60,7 @@ class Query(BaseQuery):
     foreign keys should define __str__ for a human readable name.
     """
     color_scale_path = os.path.join(
-        os.environ.get('DC_UI_DIR'), 'utils/color_scales/cloud_coverage')
+        settings.DC_UI_DIR, 'utils/color_scales/cloud_coverage')
     base_result_dir = '/datacube/ui_results/cloud_coverage'
 
     class Meta(BaseQuery.Meta):

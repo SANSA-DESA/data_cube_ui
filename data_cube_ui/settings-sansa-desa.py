@@ -5,6 +5,7 @@ We use this mostly to fetch additional settings from the environment
 """
 
 import os
+from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -20,7 +21,7 @@ def get_env_variable(variable, default=None):
             value = default
         else:
             raise ImproperlyConfigured(
-                f'Add the {env_var_name} environment variable')
+                f'Add the {env_var_name!r} environment variable')
     return value
 
 
@@ -55,3 +56,5 @@ CELERY_BROKER_URL = get_env_variable(
 
 CELERY_RESULT_BACKEND = get_env_variable(
     'CELERY_RESULT_BACKEND', CELERY_BROKER_URL)
+
+DC_UI_DIR = str(Path(BASE_DIR) / 'utils')
