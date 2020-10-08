@@ -4,7 +4,9 @@ We use this mostly to fetch additional settings from the environment
 
 """
 
+from configparser import ConfigParser
 import os
+import typing
 from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
@@ -12,8 +14,12 @@ from django.core.exceptions import ImproperlyConfigured
 from .settings import *
 
 
-def get_env_variable(variable, default=None):
-    prefix = 'DJANGO__'
+def get_env_variable(
+        variable: str,
+        default: typing.Optional[typing.Any] = None,
+        use_prefix: typing.Optional[bool] = True
+):
+    prefix = 'DJANGO__' if use_prefix else ''
     env_var_name = f'{prefix}{variable}'
     value = os.getenv(env_var_name)
     if value is None:
@@ -40,6 +46,21 @@ def get_bool_env_variable(variable, default=None):
     return True if value.lower() in truthy_values else False
 
 
+def get_odc_db_connection_details(
+        config_path: Path,
+        env: typing.Optional[str] = 'default'
+) -> typing.Dict[str, str]:
+    config = ConfigParser()
+    config.read(config_path)
+    return {
+        'host': config[env].get('db_hostname'),
+        'port': config[env].get('db_port'),
+        'db_name': config[env]['db_database'],
+        'username': config[env]['db_username'],
+        'password': config[env]['db_password'],
+    }
+
+
 DEBUG = get_env_variable('DEBUG', False)
 
 SECRET_KEY = get_env_variable('SECRET_KEY')
@@ -58,3 +79,34 @@ CELERY_RESULT_BACKEND = get_env_variable(
     'CELERY_RESULT_BACKEND', CELERY_BROKER_URL)
 
 DC_UI_DIR = str(Path(BASE_DIR) / 'utils')
+
+DATABASES['default'].update({
+    'NAME': get_env_variable('DEFAULT_DB_NAME', 'data_cube_ui'),
+    'USER': get_env_variable('DEFAULT_DB_USER', DATABASES['default']['NAME']),
+    'PASSWORD': get_env_variable(
+        'DEFAULT_DB_PASSWORD',
+        DATABASES['default']['USER']
+    ),
+    'HOST': get_env_variable('DEFAULT_DB_HOST', django_db_host),
+    'PORT': get_env_variable('DEFAULT_DB_PORT', django_db_host),
+})
+
+# get ODC DB connection details from the already existing odc configuration file
+ODC_CONFIG_PATH = get_env_variable(
+    'ODC_CONFIG_PATH',
+    default=Path('~/.datacube.conf').expanduser(),
+    use_prefix=False
+)
+ODC_ENV_NAME = get_env_variable(
+    'ODC_ENV_NAME',
+    default='internal',
+    use_prefix=False
+)
+odc_db_details = get_odc_db_connection_details(ODC_CONFIG_PATH, ODC_ENV_NAME)
+DATABASES['agdc'].update({
+    'NAME': odc_db_details['db_name'],
+    'USER': odc_db_details['username'],
+    'PASSWORD': odc_db_details['password'],
+    'HOST': odc_db_details['host'],
+    'PORT': odc_db_details['port']
+})
