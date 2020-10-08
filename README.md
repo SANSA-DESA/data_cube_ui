@@ -1,3 +1,23 @@
+# SANSA-DESA customizations to Open Data Cube UI version 2.20
+
+This repository is a fork of the official 
+[data_cube_ui repository](https://github.com/SANSA-DESA/data_cube_ui).
+
+The reason for its existence is that SANSA-DESA is not using docker for 
+installing its application stack and the data_cube_ui is developed with
+a docker-centric installation method.
+
+Main modifications:
+
+- Install without docker
+- Harden django settings and also make them pull additional stuff via 
+  environment variables
+- Use gunicorn and nginx instead of apache+apache_mod_wsgi
+
+Below is the original data_cube_ui README
+
+---
+
 # CEOS Open Data Cube UI
 
 The CEOS Data Cube UI is a full stack Python web application used to perform analysis on raster datasets using the [Open Data Cube](https://www.opendatacube.org/). Using common and widely accepted frameworks and libraries, our UI is a good tool for demonstrating the Open Data Cube's capabilities and some possible applications and architectures. The UI's core technologies are:
