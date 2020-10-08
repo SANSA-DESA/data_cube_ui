@@ -78,13 +78,13 @@ class Query(BaseQuery):
     base_result_dir = '/datacube/ui_results/water_detection'
     color_scales = {
         'wofs': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/water_percentage_binned'),
+            settings.DC_UI_DIR, 'utils/color_scales/water_percentage_binned'),
         'normalized_data': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/water_percentage_binned'),
+            settings.DC_UI_DIR, 'utils/color_scales/water_percentage_binned'),
         'total_data': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/water_observations_binned'),
+            settings.DC_UI_DIR, 'utils/color_scales/water_observations_binned'),
         'total_clean': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/clear_observations_binned'),
+            settings.DC_UI_DIR, 'utils/color_scales/clear_observations_binned'),
     }
 
     class Meta(BaseQuery.Meta):

@@ -79,19 +79,19 @@ class Query(BaseQuery):
 
     color_scales = {
         'wofs': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/water_percentage_binned'),
+            settings.DC_UI_DIR, 'utils/color_scales/water_percentage_binned'),
         'tsm': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/tsm_binned'),
+            settings.DC_UI_DIR, 'utils/color_scales/tsm_binned'),
         'normalized_data': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/tsm_binned'),
+            settings.DC_UI_DIR, 'utils/color_scales/tsm_binned'),
         'max': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/tsm_binned'),
+            settings.DC_UI_DIR, 'utils/color_scales/tsm_binned'),
         'min': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/tsm_binned'),
+            settings.DC_UI_DIR, 'utils/color_scales/tsm_binned'),
         'variability': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/tsm_binned'),
+            settings.DC_UI_DIR, 'utils/color_scales/tsm_binned'),
         'total_clean': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/clear_observations_binned'),
+            settings.DC_UI_DIR, 'utils/color_scales/clear_observations_binned'),
     }
 
     class Meta(BaseQuery.Meta):

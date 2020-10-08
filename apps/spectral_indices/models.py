@@ -70,19 +70,19 @@ class Query(BaseQuery):
 
     color_scale_path = {
         'ndvi': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/ndvi'),
+            settings.DC_UI_DIR, 'utils/color_scales/ndvi'),
         'evi': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/evi'),
+            settings.DC_UI_DIR, 'utils/color_scales/evi'),
         'savi': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/ryg'),
+            settings.DC_UI_DIR, 'utils/color_scales/ryg'),
         'nbr': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/ryg'),
+            settings.DC_UI_DIR, 'utils/color_scales/ryg'),
         'nbr2': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/ryg'),
+            settings.DC_UI_DIR, 'utils/color_scales/ryg'),
         'ndwi': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/ryg'),
+            settings.DC_UI_DIR, 'utils/color_scales/ryg'),
         'ndbi': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/ryg'),
+            settings.DC_UI_DIR, 'utils/color_scales/ryg'),
     }
 
     base_result_dir = '/datacube/ui_results/spectral_indices'

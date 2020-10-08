@@ -61,13 +61,13 @@ class Query(BaseQuery):
     base_result_dir = '/datacube/ui_results/ndvi_anomaly'
     color_scales = {
         'baseline_ndvi': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/ndvi'),
+            settings.DC_UI_DIR, 'utils/color_scales/ndvi'),
         'scene_ndvi': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/ndvi'),
+            settings.DC_UI_DIR, 'utils/color_scales/ndvi'),
         'ndvi_difference': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/ndvi_difference'),
+            settings.DC_UI_DIR, 'utils/color_scales/ndvi_difference'),
         'ndvi_percentage_change': os.path.join(
-            os.environ.get('DC_UI_DIR'), 'utils/color_scales/ndvi_percentage_change'),
+            settings.DC_UI_DIR, 'utils/color_scales/ndvi_percentage_change'),
     }
 
     class Meta(BaseQuery.Meta):

@@ -64,7 +64,7 @@ class Query(BaseQuery):
     compositor = models.ForeignKey(Compositor)
 
     color_scale_path = os.path.join(
-        os.environ.get('DC_UI_DIR'), 'utils/color_scales/default_color_scale')
+        settings.DC_UI_DIR, 'utils/color_scales/default_color_scale')
     base_result_dir = '/datacube/ui_results/band_math_app'
 
     class Meta(BaseQuery.Meta):
