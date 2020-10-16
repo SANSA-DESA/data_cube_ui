@@ -4,9 +4,9 @@ We use this mostly to fetch additional settings from the environment
 
 """
 
-from configparser import ConfigParser
 import os
 import typing
+from configparser import ConfigParser
 from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
@@ -69,8 +69,12 @@ ADMIN_EMAIL = get_env_variable('ADMIN_EMAIL', ADMIN_EMAIL)
 
 TIME_ZONE = 'UTC'
 
-# not sure why the original data_cube_ui customized this yet
-STATICFILES_DIRS = []
+STATIC_ROOT = get_env_variable(
+    'STATIC_ROOT', str(Path('~').expanduser() / 'data_cube_ui_static_root'))
+
+STATICFILES_DIRS = [
+    str(Path(BASE_DIR) / 'static'),
+]
 
 CELERY_BROKER_URL = get_env_variable(
     'CELERY_BROKER_URL', 'redis://localhost:6379')
@@ -87,8 +91,8 @@ DATABASES['default'].update({
         'DEFAULT_DB_PASSWORD',
         DATABASES['default']['USER']
     ),
-    'HOST': get_env_variable('DEFAULT_DB_HOST', django_db_host),
-    'PORT': get_env_variable('DEFAULT_DB_PORT', django_db_host),
+    'HOST': get_env_variable('DEFAULT_DB_HOST', 'localhost'),
+    'PORT': get_env_variable('DEFAULT_DB_PORT', 5432),
 })
 
 # get ODC DB connection details from the already existing odc configuration file
