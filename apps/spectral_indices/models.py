@@ -20,6 +20,7 @@
 # under the License.
 
 import os
+from pathlib import Path
 
 from django.db import models
 from django.conf import settings
@@ -85,7 +86,8 @@ class Query(BaseQuery):
             settings.DC_UI_DIR, 'utils/color_scales/ryg'),
     }
 
-    base_result_dir = '/datacube/ui_results/spectral_indices'
+    base_result_dir = str(
+        Path(settings.DATA_CUBE_UI_RESULTS_DIR) / 'spectral_indices')
 
     class Meta(BaseQuery.Meta):
         unique_together = (('satellite', 'area_id', 'time_start', 'time_end', 'latitude_max', 'latitude_min',

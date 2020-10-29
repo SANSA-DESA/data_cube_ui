@@ -20,6 +20,7 @@
 # under the License.
 
 import os
+from pathlib import Path
 
 from django.db import models
 from django.conf import settings
@@ -75,7 +76,8 @@ class Query(BaseQuery):
     query_type = models.ForeignKey(ResultType)
     animated_product = models.ForeignKey(AnimationType)
 
-    base_result_dir = '/datacube/ui_results/water_detection'
+    base_result_dir = str(
+        Path(settings.DATA_CUBE_UI_RESULTS_DIR) / 'water_detection')
     color_scales = {
         'wofs': os.path.join(
             settings.DC_UI_DIR, 'utils/color_scales/water_percentage_binned'),

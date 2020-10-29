@@ -84,6 +84,11 @@ CELERY_RESULT_BACKEND = get_env_variable(
 
 DC_UI_DIR = str(Path(BASE_DIR) / 'utils')
 
+DATA_CUBE_UI_RESULTS_DIR = get_env_variable(
+    'DATA_CUBE_UI_RESULTS_DIR',
+    str(Path(BASE_DIR) / 'ui_results')
+)
+
 DATABASES['default'].update({
     'NAME': get_env_variable('DEFAULT_DB_NAME', 'data_cube_ui'),
     'USER': get_env_variable('DEFAULT_DB_USER', DATABASES['default']['NAME']),

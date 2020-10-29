@@ -20,6 +20,7 @@
 # under the License.
 
 import os
+from pathlib import Path
 
 from django.db import models
 from django.conf import settings
@@ -75,7 +76,8 @@ class Query(BaseQuery):
     query_type = models.ForeignKey(ResultType)
     animated_product = models.ForeignKey(AnimationType)
 
-    base_result_dir = '/datacube/ui_results/tsm'
+    base_result_dir = str(
+        Path(settings.DATA_CUBE_UI_RESULTS_DIR) / 'tsm')
 
     color_scales = {
         'wofs': os.path.join(

@@ -75,7 +75,8 @@ class Query(BaseQuery):
 
     config_path = '/app/config/datacube.conf'
     measurements = ['blue', 'green', 'red', 'nir', 'swir1', 'swir2', 'cf_mask']
-    base_result_dir = '/datacube/ui_results/coastal_change'
+    base_result_dir = str(
+        Path(settings.DATA_CUBE_UI_RESULTS_DIR) / 'coastal_change')
 
     class Meta(BaseQuery.Meta):
         unique_together = (('platform', 'area_id', 'time_start', 'time_end', 'latitude_max', 'latitude_min', 'longitude_max',

@@ -19,6 +19,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from pathlib import Path
+
+from django.conf import settings
 from django.db import models
 
 from apps.dc_algorithm.models import Area, Compositor, Satellite
@@ -68,7 +71,8 @@ class Query(BaseQuery):
     baseline_method = models.ForeignKey(BaselineMethod)
     baseline_length = models.IntegerField(default=10)
 
-    base_result_dir = '/datacube/ui_results/slip'
+    base_result_dir = str(
+        Path(settings.DATA_CUBE_UI_RESULTS_DIR) / 'slip')
 
     class Meta(BaseQuery.Meta):
         unique_together = (

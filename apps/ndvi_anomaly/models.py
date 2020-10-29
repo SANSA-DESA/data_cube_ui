@@ -20,6 +20,7 @@
 # under the License.
 
 import os
+from pathlib import Path
 
 from django.db import models
 from django.conf import settings
@@ -58,7 +59,8 @@ class Query(BaseQuery):
     """
     baseline_selection = models.CharField(max_length=100, default="1,2,3,4,5,6,7,8,9,10,11,12")
 
-    base_result_dir = '/datacube/ui_results/ndvi_anomaly'
+    base_result_dir = str(
+        Path(settings.DATA_CUBE_UI_RESULTS_DIR) / 'ndvi_anomaly')
     color_scales = {
         'baseline_ndvi': os.path.join(
             settings.DC_UI_DIR, 'utils/color_scales/ndvi'),

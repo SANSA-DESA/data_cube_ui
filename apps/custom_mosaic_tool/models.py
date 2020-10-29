@@ -19,6 +19,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from pathlib import Path
+
+from django.conf import settings
 from django.db import models
 
 from apps.dc_algorithm.models import Area, Compositor, Satellite
@@ -77,7 +80,8 @@ class Query(BaseQuery):
     animated_product = models.ForeignKey(AnimationType)
     compositor = models.ForeignKey(Compositor)
 
-    base_result_dir = '/datacube/ui_results/custom_mosaic_tool'
+    base_result_dir = str(
+        Path(settings.DATA_CUBE_UI_RESULTS_DIR) / 'custom_mosaic_tool')
 
     class Meta(BaseQuery.Meta):
         unique_together = (

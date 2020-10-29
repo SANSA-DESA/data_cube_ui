@@ -19,6 +19,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from pathlib import Path
+
+from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
 
@@ -69,7 +72,8 @@ class Query(BaseQuery):
 
     animated_product = models.ForeignKey(AnimationType)
 
-    base_result_dir = '/datacube/ui_results/coastal_change'
+    base_result_dir = str(
+        Path(settings.DATA_CUBE_UI_RESULTS_DIR) / 'coastal_change')
 
     class Meta(BaseQuery.Meta):
         unique_together = (('satellite', 'area_id', 'time_start', 'time_end', 'latitude_max', 'latitude_min',
