@@ -23,7 +23,7 @@ import shutil
 from apps.data_cube_manager.models import (Dataset, DatasetType, DatasetSource, DatasetLocation, IngestionRequest,
                                            IngestionDetails)
 from apps.data_cube_manager.templates.bulk_downloader import base_downloader_script, static_script
-from utils.data_cube_utilities.data_access_api import DataAccessApi
+from data_cube_ui.utils_sansa_desa import SansaDesaDataAccessApi
 
 logger = get_task_logger(__name__)
 
@@ -64,7 +64,7 @@ def update_data_cube_details(ingested_only=True):
     dataset_types = DatasetType.objects.using('agdc').filter(
         Q(definition__has_keys=['managed']) & Q(definition__has_keys=['measurements']))
 
-    dc = DataAccessApi(config=os.environ.get('DATACUBE_CONFIG_PATH'))
+    dc = SansaDesaDataAccessApi()
 
     for dataset_type in dataset_types:
         ingestion_details, created = IngestionDetails.objects.get_or_create(
@@ -86,7 +86,7 @@ def run_ingestion(ingestion_definition):
     Returns:
         The primary key of the new dataset type.
     """
-    conf_path = os.environ.get('DATACUBE_CONFIG_PATH')
+    conf_path = settings.DATACUBE_CONFIG_PATH
     index = index_connect(local_config=LocalConfig.find([conf_path]))
 
     source_type, output_type = ingest.make_output_type(index, ingestion_definition)
@@ -104,7 +104,7 @@ def ingestion_work(output_type, source_type, ingestion_definition):
         output_type, source_type: types produced by ingest.make_output_type
         ingestion_definition: dict representing a Data Cube ingestion def produced using the utils func.
     """
-    conf_path = os.environ.get('DATACUBE_CONFIG_PATH')
+    conf_path = settings.DATACUBE_CONFIG_PATH
     index = index_connect(local_config=LocalConfig.find([conf_path]))
 
     tasks = ingest.create_task_list(index, output_type, None, source_type, ingestion_definition)

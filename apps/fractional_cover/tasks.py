@@ -8,7 +8,7 @@ import xarray as xr
 import os
 import stringcase
 
-from utils.data_cube_utilities.data_access_api import DataAccessApi
+from data_cube_ui.utils_sansa_desa import SansaDesaDataAccessApi
 from utils.data_cube_utilities.dc_utilities import (create_cfmask_clean_mask, create_bit_mask, write_geotiff_from_xr,
                                                     write_png_from_xr, write_single_band_png_from_xr,
                                                     add_timestamp_data_to_xr, clear_attrs)
@@ -18,6 +18,7 @@ from utils.data_cube_utilities.dc_fractional_coverage_classifier import frac_cov
 from utils.data_cube_utilities.dc_water_classifier import wofs_classify
 from apps.dc_algorithm.utils import create_2d_plot, _get_datetime_range_containing
 from utils.data_cube_utilities.import_export import export_xarray_to_netcdf
+
 
 from .models import FractionalCoverTask
 from apps.dc_algorithm.models import Satellite
@@ -39,7 +40,7 @@ def pixel_drill(task_id=None):
     if task.status == "ERROR":
         return None
 
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
     single_pixel = dc.get_stacked_datasets_by_extent(**parameters)
     clear_mask = task.satellite.get_clean_mask_func()(single_pixel.isel(latitude=0, longitude=0))
     single_pixel = single_pixel.where(single_pixel != task.satellite.no_data_value)
@@ -142,7 +143,7 @@ def validate_parameters(self, parameters, task_id=None):
     task = FractionalCoverTask.objects.get(pk=task_id)
     if check_cancel_task(self, task): return
 
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
 
     #validate for any number of criteria here - num acquisitions, etc.
     acquisitions = dc.list_combined_acquisition_dates(**parameters)
@@ -191,7 +192,7 @@ def perform_task_chunking(self, parameters, task_id=None):
     task = FractionalCoverTask.objects.get(pk=task_id)
     if check_cancel_task(self, task): return
 
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
     dates = dc.list_combined_acquisition_dates(**parameters)
     task_chunk_sizing = task.get_chunk_size()
 
@@ -308,7 +309,7 @@ def processing_task(self,
     times = list(
         map(_get_datetime_range_containing, time_chunk)
         if task.get_iterative() else [_get_datetime_range_containing(time_chunk[0], time_chunk[-1])])
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
     updated_params = parameters
     updated_params.update(geographic_chunk)
     iteration_data = None

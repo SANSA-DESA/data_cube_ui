@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import xarray as xr
 import os
 
-from utils.data_cube_utilities.data_access_api import DataAccessApi
+from data_cube_ui.utils_sansa_desa import SansaDesaDataAccessApi
 from utils.data_cube_utilities.dc_utilities import (create_cfmask_clean_mask, create_bit_mask, write_geotiff_from_xr,
                                                     write_png_from_xr, add_timestamp_data_to_xr, clear_attrs)
 from utils.data_cube_utilities.dc_chunker import (create_geographic_chunks, generate_baseline,
@@ -30,7 +30,7 @@ class BaseTask(DCAlgorithmBase):
 
 @task(name="slip.get_acquisition_list")
 def get_acquisition_list(task, area_id, satellite, date):
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
     # lists all acquisition dates for use in single tmeslice queries.
     # satellite.product_prefix +
     product = area_id
@@ -96,7 +96,7 @@ def validate_parameters(self, parameters, task_id=None):
     task = SlipTask.objects.get(pk=task_id)
     if check_cancel_task(self, task): return
 
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
 
     acquisitions = dc.list_acquisition_dates(**parameters)
 
@@ -153,7 +153,7 @@ def perform_task_chunking(self, parameters, task_id=None):
     task = SlipTask.objects.get(pk=task_id)
     if check_cancel_task(self, task): return
 
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
     dates = dc.list_acquisition_dates(**parameters)
     task_chunk_sizing = task.get_chunk_size()
 
@@ -253,7 +253,7 @@ def processing_task(self,
     metadata = {}
 
     time_range = _get_datetime_range_containing(time_chunk[0], time_chunk[-1])
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
     updated_params = {**parameters}
     updated_params.update(geographic_chunk)
     updated_params.update({'time': time_range})

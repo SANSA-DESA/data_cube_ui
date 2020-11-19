@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import xarray as xr
 import os
 
-from utils.data_cube_utilities.data_access_api import DataAccessApi
+from data_cube_ui.utils_sansa_desa import SansaDesaDataAccessApi
 from utils.data_cube_utilities.dc_utilities import (create_cfmask_clean_mask, create_bit_mask, write_geotiff_from_xr,
                                                     write_png_from_xr, write_single_band_png_from_xr,
                                                     add_timestamp_data_to_xr, clear_attrs)
@@ -86,7 +86,7 @@ def validate_parameters(self, parameters, task_id=None):
     task = NdviAnomalyTask.objects.get(pk=task_id)
     if check_cancel_task(self, task): return
 
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
 
     acquisitions = dc.list_acquisition_dates(**parameters)
 
@@ -146,7 +146,7 @@ def perform_task_chunking(self, parameters, task_id=None):
     task = NdviAnomalyTask.objects.get(pk=task_id)
     if check_cancel_task(self, task): return
 
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
     task_chunk_sizing = task.get_chunk_size()
 
     geographic_chunks = create_geographic_chunks(
@@ -255,7 +255,7 @@ def processing_task(self,
 
     base_scene_time_range = parameters['time']
 
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
     updated_params = parameters
     updated_params.update(geographic_chunk)
 

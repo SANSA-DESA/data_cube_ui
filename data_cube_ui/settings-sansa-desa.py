@@ -77,7 +77,7 @@ STATICFILES_DIRS = [
 ]
 
 CELERY_BROKER_URL = get_env_variable(
-    'CELERY_BROKER_URL', 'redis://localhost:6379')
+    'CELERY_BROKER_URL', 'redis://localhost:6379/0')
 
 CELERY_RESULT_BACKEND = get_env_variable(
     'CELERY_RESULT_BACKEND', CELERY_BROKER_URL)
@@ -101,17 +101,17 @@ DATABASES['default'].update({
 })
 
 # get ODC DB connection details from the already existing odc configuration file
-ODC_CONFIG_PATH = get_env_variable(
-    'ODC_CONFIG_PATH',
+DATACUBE_CONFIG_PATH = get_env_variable(
+    'DATACUBE_CONFIG_PATH',
     default=Path('~/.datacube.conf').expanduser(),
     use_prefix=False
 )
-ODC_ENV_NAME = get_env_variable(
-    'ODC_ENV_NAME',
+DATACUBE_ENVIRONMENT = get_env_variable(
+    'DATACUBE_ENVIRONMENT',
     default='internal',
     use_prefix=False
 )
-odc_db_details = get_odc_db_connection_details(ODC_CONFIG_PATH, ODC_ENV_NAME)
+odc_db_details = get_odc_db_connection_details(DATACUBE_CONFIG_PATH, DATACUBE_ENVIRONMENT)
 DATABASES['agdc'].update({
     'NAME': odc_db_details['db_name'],
     'USER': odc_db_details['username'],

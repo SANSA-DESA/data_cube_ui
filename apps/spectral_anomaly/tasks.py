@@ -11,7 +11,7 @@ from xarray.ufuncs import logical_and as xr_and
 from xarray.ufuncs import logical_not as xr_not
 import os
 
-from utils.data_cube_utilities.data_access_api import DataAccessApi
+from data_cube_ui.utils_sansa_desa import SansaDesaDataAccessApi
 from utils.data_cube_utilities.dc_utilities import (create_cfmask_clean_mask, create_bit_mask, write_geotiff_from_xr,
                                                     write_png_from_xr, add_timestamp_data_to_xr, clear_attrs)
 from utils.data_cube_utilities.dc_chunker import (create_geographic_chunks, create_time_chunks,
@@ -120,7 +120,7 @@ def validate_parameters(self, parameters, task_id=None):
     task = SpectralAnomalyTask.objects.get(pk=task_id)
     if check_cancel_task(self, task): return
 
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
 
     baseline_parameters = parameters.copy()
     baseline_parameters['time'] = parameters['baseline_time']
@@ -176,7 +176,7 @@ def perform_task_chunking(self, parameters, task_id=None):
     task = SpectralAnomalyTask.objects.get(pk=task_id)
     if check_cancel_task(self, task): return
 
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
     task_chunk_sizing = task.get_chunk_size()
 
     geographic_chunks = create_geographic_chunks(
@@ -212,7 +212,7 @@ def start_chunk_processing(self, chunk_details, task_id=None):
 
     task = SpectralAnomalyTask.objects.get(pk=task_id)
 
-    api = DataAccessApi(config=task.config_path)
+    api = SansaDesaDataAccessApi()
 
     # Get an estimate of the amount of work to be done: the number of scenes
     # to process, also considering intermediate chunks to be combined.
@@ -294,7 +294,7 @@ def processing_task(self,
     # and filter the data according to user-supplied parameters -
     # recording where the data was out of the filter's range so we can
     # create the output product (an image).
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
     updated_params = parameters
     updated_params.update(geographic_chunk)
     spectral_index = task.query_type.result_id

@@ -79,8 +79,6 @@ class Query(models.Model):
     #false by default, only change is false-> true
     complete = models.BooleanField(default=False)
 
-    config_path = '/app/config/datacube.conf'
-
     class Meta:
         abstract = True
         unique_together = (('satellite', 'area_id', 'time_start', 'time_end', 'latitude_max', 'latitude_min',

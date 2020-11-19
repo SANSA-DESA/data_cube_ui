@@ -8,7 +8,7 @@ import xarray as xr
 import os
 import imageio
 
-from utils.data_cube_utilities.data_access_api import DataAccessApi
+from data_cube_ui.utils_sansa_desa import SansaDesaDataAccessApi
 from utils.data_cube_utilities.dc_coastal_change import compute_coastal_change, mask_mosaic_with_coastal_change, mask_mosaic_with_coastlines
 from utils.data_cube_utilities.dc_utilities import (create_cfmask_clean_mask, create_bit_mask, write_geotiff_from_xr,
                                                     write_png_from_xr, add_timestamp_data_to_xr, clear_attrs)
@@ -86,7 +86,7 @@ def validate_parameters(self, parameters, task_id=None):
     task = CoastalChangeTask.objects.get(pk=task_id)
     if check_cancel_task(self, task): return
 
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
 
     validation_params = dict(parameters)
     # verify that both the start and end year have acquisitions
@@ -132,7 +132,7 @@ def perform_task_chunking(self, parameters, task_id=None):
     task = CoastalChangeTask.objects.get(pk=task_id)
     if check_cancel_task(self, task): return
 
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
     dates = dc.list_acquisition_dates(**parameters)
     task_chunk_sizing = task.get_chunk_size()
 
@@ -240,7 +240,7 @@ def processing_task(self,
     starting_year = _get_datetime_range_containing(*time_chunk[0])
     comparison_year = _get_datetime_range_containing(*time_chunk[1])
 
-    dc = DataAccessApi(config=task.config_path)
+    dc = SansaDesaDataAccessApi()
     updated_params = parameters
     updated_params.update(geographic_chunk)
 
