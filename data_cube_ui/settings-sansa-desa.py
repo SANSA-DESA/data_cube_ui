@@ -31,13 +31,12 @@ def get_env_variable(
     return value
 
 
-def get_bool_env_variable(variable, default=None):
+def get_bool_env_variable(variable, default: typing.Optional[bool] = None):
     try:
-        value = get_env_variable(variable, default=default)
+        value = get_env_variable(variable, default=str(default))
     except ImproperlyConfigured:
         raise
     truthy_values = (
-        True,
         '1',
         'on',
         'yes',
@@ -61,7 +60,7 @@ def get_odc_db_connection_details(
     }
 
 
-DEBUG = get_env_variable('DEBUG', False)
+DEBUG = get_bool_env_variable('DEBUG', False)
 
 SECRET_KEY = get_env_variable('SECRET_KEY')
 
